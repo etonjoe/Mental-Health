@@ -13,7 +13,8 @@ Designing a database and data warehouse for a mental health system requires mult
 Here's an approach for the database (for day-to-day operations) and the data warehouse (for analytics and reporting).
 <details>
 <summary> 
-1. Database Design (OLTP - Online Transaction Processing)
+  
+### 1. Database Design (OLTP - Online Transaction Processing)
 </summary>
 The database will support transactional operations for the mental health system. Below are key entities and their relationships:
 
@@ -106,11 +107,119 @@ The database will support transactional operations for the mental health system.
  + A **Patient** can be assessed using several **OutcomeAssessments** over time.
  </details>
  <details>
-   <summary>2. Data Warehouse Design (OLAP - Online Analytical Processing)</summary>
+   <summary>
+     
+  ### 2. Data Warehouse Design (OLAP - Online Analytical Processing)
+   </summary>
+   The data warehouse will store aggregated and historical data to facilitate reporting, analysis, and decision-making.
+
+Fact Tables:
+FactAppointment:
+
+AppointmentID (PK)
+PatientID (FK)
+ProfessionalID (FK)
+AppointmentDate
+AppointmentTime
+AppointmentDuration
+Notes
+FactDiagnosis:
+
+DiagnosisID (PK)
+PatientID (FK)
+ProfessionalID (FK)
+DiagnosisDate
+DiagnosisCode
+DiagnosisDescription
+FactTreatmentPlan:
+
+TreatmentPlanID (PK)
+PatientID (FK)
+StartDate
+EndDate
+TreatmentPlanType
+FactSession:
+
+SessionID (PK)
+PatientID (FK)
+ProfessionalID (FK)
+SessionDate
+SessionType
+SessionDuration
+FactMedication:
+
+MedicationID (PK)
+MedicationName
+Dosage
+PrescriptionDate
+SideEffects
+FactBilling:
+
+BillingID (PK)
+PatientID (FK)
+AppointmentID (FK)
+BillingAmount
+PaymentStatus
+PaymentDate
+FactOutcomeAssessment:
+
+AssessmentID (PK)
+PatientID (FK)
+AssessmentTool
+Score
+AssessmentDate
+Dimension Tables:
+DimPatient:
+
+PatientID (PK)
+FullName
+Gender
+Age
+ContactInfo
+EmergencyContact
+DimProfessional:
+
+ProfessionalID (PK)
+FullName
+Specialty
+ContactInfo
+DimTime:
+
+TimeID (PK)
+Date
+Month
+Quarter
+Year
+DimSessionType:
+
+SessionTypeID (PK)
+SessionType (e.g., CBT, Family Therapy)
+DimDiagnosisCode:
+
+DiagnosisCode (PK)
+DiagnosisDescription
+ICD-10/DSM-5 Code
+DimMedication:
+
+MedicationID (PK)
+MedicationName
+Dosage
+SideEffects
  </details>
-  <details>
-   <summary>3. ETL Process (Extract, Transform, Load)</summary>
+<details>
+   <summary>
+     
+  ### 3. ETL Process (Extract, Transform, Load)
+  </summary>
+  
+  + **Extract**: Data is extracted from the operational database (OLTP) at regular intervals. 
+  + **Transform**: Clean, normalize, and transform the data (e.g., summarizing, categorizing, calculating derived metrics).
+  + **Load**: Load the transformed data into the data warehouse (OLAP).
  </details>
+ 
    <details>
-   <summary>4. Example Queries for the Data Warehouse</summary>
+   <summary>
+
+  ### 4. Example Queries for the Data Warehouse
+  </summary>
  </details>
