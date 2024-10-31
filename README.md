@@ -113,98 +113,92 @@ The database will support transactional operations for the mental health system.
    </summary>
    The data warehouse will store aggregated and historical data to facilitate reporting, analysis, and decision-making.
 
-Fact Tables:
-FactAppointment:
+## **Fact Tables:**
+### 1. FactAppointment:
+  + AppointmentID (PK)
+  + PatientID (FK)
+  + ProfessionalID (FK)
+  + AppointmentDate
+  + AppointmentTime
+  + AppointmentDuration
+  + Notes
+### 2. FactDiagnosis:
+  + DiagnosisID (PK)
+  + PatientID (FK)
+  + ProfessionalID (FK)
+  + DiagnosisDate
+  + DiagnosisCode
+  + DiagnosisDescription
 
-AppointmentID (PK)
-PatientID (FK)
-ProfessionalID (FK)
-AppointmentDate
-AppointmentTime
-AppointmentDuration
-Notes
-FactDiagnosis:
+### 3. FactTreatmentPlan:
+  + TreatmentPlanID (PK)
+  + PatientID (FK)
+  + StartDate
+  + EndDate
+  + TreatmentPlanType
+### 4. FactSession:
+  + SessionID (PK)
+  + PatientID (FK)
+  + ProfessionalID (FK)
+  + SessionDate
+  + SessionType
+  + SessionDuration
+### 5. FactMedication:
+  + MedicationID (PK)
+  + MedicationName
+  + Dosage
+  + PrescriptionDate
+  + SideEffects
+### 6. FactBilling:
+  + BillingID (PK)
+  + PatientID (FK)
+  + AppointmentID (FK)
+  + BillingAmount
+  + PaymentStatus
+  + PaymentDate
+### 7. FactOutcomeAssessment:
+  + AssessmentID (PK)
+  + PatientID (FK)
+  + AssessmentTool
+  + Score
+  + AssessmentDate
 
-DiagnosisID (PK)
-PatientID (FK)
-ProfessionalID (FK)
-DiagnosisDate
-DiagnosisCode
-DiagnosisDescription
-FactTreatmentPlan:
+### Dimension Tables:
+### 1. DimPatient:
+  + PatientID (PK)
+  + FullName
+  + Gender
+  + Age
+  + ContactInfo
+  + EmergencyContact
 
-TreatmentPlanID (PK)
-PatientID (FK)
-StartDate
-EndDate
-TreatmentPlanType
-FactSession:
+### 2. DimProfessional:
+  + ProfessionalID (PK)
+  + FullName
+  + Specialty
+  + ContactInfo
 
-SessionID (PK)
-PatientID (FK)
-ProfessionalID (FK)
-SessionDate
-SessionType
-SessionDuration
-FactMedication:
+### 3. DimTime:
+  + TimeID (PK)
+  + Date
+  + Month
+  + Quarter
+  + Year
 
-MedicationID (PK)
-MedicationName
-Dosage
-PrescriptionDate
-SideEffects
-FactBilling:
+### 4. DimSessionType:
+  + SessionTypeID (PK)
+  + SessionType (e.g., CBT, Family Therapy)
 
-BillingID (PK)
-PatientID (FK)
-AppointmentID (FK)
-BillingAmount
-PaymentStatus
-PaymentDate
-FactOutcomeAssessment:
+### 5. DimDiagnosisCode:
+  + DiagnosisCode (PK)
+  + DiagnosisDescription
+  + ICD-10/DSM-5 Code
 
-AssessmentID (PK)
-PatientID (FK)
-AssessmentTool
-Score
-AssessmentDate
-Dimension Tables:
-DimPatient:
-
-PatientID (PK)
-FullName
-Gender
-Age
-ContactInfo
-EmergencyContact
-DimProfessional:
-
-ProfessionalID (PK)
-FullName
-Specialty
-ContactInfo
-DimTime:
-
-TimeID (PK)
-Date
-Month
-Quarter
-Year
-DimSessionType:
-
-SessionTypeID (PK)
-SessionType (e.g., CBT, Family Therapy)
-DimDiagnosisCode:
-
-DiagnosisCode (PK)
-DiagnosisDescription
-ICD-10/DSM-5 Code
-DimMedication:
-
-MedicationID (PK)
-MedicationName
-Dosage
-SideEffects
+### 6. DimMedication:
+  + MedicationID (PK)
+  + MedicationName
+  + Dosage
+  + SideEffects
  </details>
 <details>
    <summary>
