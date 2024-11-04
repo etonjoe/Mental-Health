@@ -216,4 +216,92 @@ The database will support transactional operations for the mental health system.
 
   ### 4. Example Queries for the Data Warehouse
   </summary>
+
+### 1. Outcome Monitoring:
+
++ Track patient progress over time using outcome assessments (e.g., PHQ-9, GAD-7) to identify trends in mental health improvement or decline.
+ ```sql
+  SELECT p.FullName, o.AssessmentDate, o.Score, d.DiagnosisDescription
+  FROM FactOutcomeAssessment o
+  JOIN DimPatient p ON o.PatientID = p.PatientID
+  JOIN FactDiagnosis d ON o.PatientID = d.PatientID
+  WHERE AssessmentTool = 'PHQ-9'
+  ORDER BY p.FullName, o.AssessmentDate;
+  ```
+### 2. Treatment Effectiveness:
++ Compare the effectiveness of different treatment plans and interventions across patients.
+```sql
+SELECT t.TreatmentPlanType, AVG(o.Score) as AvgScoreImprovement
+FROM FactTreatmentPlan t
+JOIN FactOutcomeAssessment o ON t.PatientID = o.PatientID
+WHERE o.AssessmentTool = 'GAD-7'
+GROUP BY t.TreatmentPlanType;
+```
+### 3. Appointment Utilization:
++ Analyze appointment data to determine peak times, most common services, or which professionals handle the most appointments.
+```sql
+SELECT p.FullName, COUNT(a.AppointmentID) as AppointmentCount
+FROM FactAppointment a
+JOIN DimProfessional p ON a.ProfessionalID = p.ProfessionalID
+GROUP BY p.FullName
+ORDER BY AppointmentCount DESC;
+```
+### Key Considerations:
++ **Privacy and Security:** Mental health data is sensitive, so the database and data warehouse must comply with regulations like HIPAA (in the U.S.) or GDPR (in Europe). Encryption, role-based access control, and anonymization should be implemented.
++ **Scalability:** Ensure the database and warehouse can handle growth in the number of patients, professionals, and sessions over time.
++ **Integration:** The system may need to integrate with other health systems (e.g., electronic health records, billing systems).
+This design provides the structure to store, manage, and analyze mental health data efficiently while supporting operational and strategic decision-making.
+
+  <details>  
+
+    <summary> 
+     
+    ## Mental Health Advanced Analytics
+    </summary>
+
+        
+    To enhance the mental health system's effectiveness using advanced analytics, various techniques can be applied across predictive modeling, natural language processing (NLP), and other machine learning methods.           Here’s how you can apply advanced analytics in different areas of the mental health system:
+        
+    ## 1. Predictive Analytics
+    Predictive analytics can help identify patients who are at high risk of deterioration or those who might benefit from specific interventions.
+    
+    ## a. Patient Outcome Prediction (Risk of Relapse or Crisis):
+    Using historical patient data (e.g., diagnoses, medications, outcomes from assessment tools), machine learning models like logistic regression, random forest, or neural networks can predict patients at risk of             relapse or crisis.
+    
+    ### Example Approach:
+    + Input Features:
+        + Demographics (age, gender, etc.)
+        + Diagnoses history
+        + Treatment plan history
+        + Session attendance data
+        + Outcome assessment scores
+        + Medications
+    + Target Variable:
+        + Binary classification: Relapse (1), No Relapse (0)
+    
+    **Model:** Random Forest, Gradient Boosting, or Logistic Regression
+    ```python
+    from sklearn.model_selection import train_test_split
+    from sklearn.ensemble import RandomForestClassifier
+    from sklearn.metrics import accuracy_score
+    
+    # Data preparation
+    X = patient_data[['age', 'diagnosis_history', 'treatment_plan', 'assessment_scores']]
+    y = patient_data['relapse']
+    
+    # Train-test split
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+    
+    # Model building
+    rf_model = RandomForestClassifier()
+    rf_model.fit(X_train, y_train)
+    
+    # Prediction
+    y_pred = rf_model.predict(X_test)
+    
+    # Accuracy
+    print(f"Accuracy: {accuracy_score(y_test, y_pred)}")
+    ```
+        
+  </details>
  </details>
